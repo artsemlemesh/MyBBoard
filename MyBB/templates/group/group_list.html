@@ -1,0 +1,35 @@
+{% extends 'flatpages/default.html' %}<html>
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'new/styles.css' %}"/>
+    <title>Groups</title>
+</head>
+<body>
+    <h1>Groups</h1>
+    <button class="custom-button">
+        <a href="{% url 'board:post_list' %}">Main page</a>
+    </button>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="background-color: #29ABCA; color: #fff;">Name</th>
+                <th style="background-color: #FFC107; color: #fff;">Description</th>
+                <th style="background-color: #29ABCA; color: #fff;">Members</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in groups %}
+            <tr>
+                <td><a href="{% url 'board:add_user_to_group' group.id %}">{{ group.name }}</a></td>
+                <td>{{ group.description }}</td>
+                <td>{{ group.members.count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+{% endblock content %}

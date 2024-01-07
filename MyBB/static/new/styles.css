@@ -1,0 +1,68 @@
+/* Global Styles */
+body {
+    background-color: #f2f2f2; /* Light gray background */
+    color: #333; /* Dark gray text */
+}
+
+/* Headings */
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* Links */
+a {
+    color: #007bff; /* Blue link color */
+    text-decoration: none; /* Remove underline */
+    font-size: 20px;
+}
+a:hover {
+    color: #0056b3; /* Darker blue on hover */
+
+}
+
+/* Buttons */
+.custom-button {
+    background-color: #28a745; /* Green background */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.custom-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Lists */
+ul {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+/* styles.css */
+
+
+.timestamp {
+    background-color: #fff;
+    color: #000;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+}
+
+
+
+
+
+/* Additional Customizations */
+/* Explore font combinations, color palettes, and spacing adjustments to match your design preferences.
+/* Consider adding subtle shadows or gradients for visual depth.
+/* Style hover and focus states for interactive elements.
+/* Ensure responsiveness for different screen sizes.
+/* Prioritize accessibility by using appropriate color contrasts and semantic HTML elements.

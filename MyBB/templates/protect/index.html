@@ -1,0 +1,44 @@
+{% extends 'sign/main.html' %}
+
+{% block content %}
+<h2>page of authorised user: {{ request.user.username}}</h2>
+<form action="" method="get">
+    {{ filterset.form }}
+    <input type="submit", value="find">
+</form>
+<hr>
+<button><a href="/">discard filter</a></button>
+<button><a href="{% url 'board:post_list' %}">main page</a></button>
+<hr>
+<button><a href="{% url 'board:login' %}"> login </a></button>
+<button><a href="{% url 'board:logout' %}"> logout </a></button>
+<h4>Comments</h4>
+{% if comments %}
+<table>
+    <thead>
+        <tr>
+            <th>Author</th>
+            <th>Comment</th>
+            <th>Rate</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for comment in comments %}
+        <tr>
+            <td>{{ comment.author }}</td>
+            <td>{{ comment.comment_text }}</td>
+            <td>{{ comment.rate }}</td>
+            <td>
+                <a href="{% url 'protect:delete' comment.id %}">delete</a>
+                <a href="{% url 'protect:accept' comment.id %}">accept</a>
+
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No comments found</p>
+{% endif %}
+{% endblock content %}

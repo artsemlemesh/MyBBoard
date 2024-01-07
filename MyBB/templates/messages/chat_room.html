@@ -1,0 +1,38 @@
+{% extends 'flatpages/default.html' %}
+{% load custom-filters %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'new/styles.css' %}"/>
+
+<div class="chat-container">  <h1>{{ community.name }}</h1>
+
+    <form id="chat-form" method="post" class="chat-form">  {% csrf_token %}
+        <input type="text" name="message" placeholder="Type your message" class="chat-input">
+        <button type="submit" class="chat-send-button">Send</button>
+    </form>
+
+    <div class="chat-messages">
+        {% for message in messages %}
+        <div class="message">
+            <p><span class="username">{{ message.user.username }}</span>: {{ message.content }}
+            <span class="timestamp" title="{{ message.timestamp }}">{{ message.timestamp|my_timestamp_format }}</span></p>
+        </div>
+        {% endfor %}
+    </div>
+
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"> <  </a>
+        {% endif %}
+
+        <a href="?page=1">1</a>
+
+        Page {{ page_obj.number}} of <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"> > </a>
+        {% endif %}
+
+</div>
+
+{% endblock content %}
