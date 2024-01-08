@@ -161,20 +161,20 @@ def community_chat_room(request, community_id):
 
 
 
-# def send_message(request, community_id):#THIS VIEW ISNT CONNECTED TO URLS AND I NEED TO FIGURE OUT WHAT IT IS FOR
-#     community = get_object_or_404(Communities, pk=community_id)
-#     if request.user not in community.members.all():
-#         return JsonResponse({'error': 'Not a member'})
-#     message_text = request.POST.get('message')
-#     if message_text:
-#         message = Message.objects.create(
-#             user=request.user, community=community, content=message_text
-#         )
-#         # Fetch new messages for real-time updates (long polling)
-#         new_messages = Message.objects.filter(community=community, timestamp__gt=message.timestamp)
-#         return JsonResponse({'messages': list(new_messages.values())})  # Return new messages
-#     else:
-#         return JsonResponse({'error': 'Empty message'})
+def send_message(request, community_id):#THIS VIEW ISNT CONNECTED TO URLS AND I NEED TO FIGURE OUT WHAT IT IS FOR
+    community = get_object_or_404(Communities, pk=community_id)
+    if request.user not in community.members.all():
+        return JsonResponse({'error': 'Not a member'})
+    message_text = request.POST.get('message')
+    if message_text:
+        message = Message.objects.create(
+            user=request.user, community=community, content=message_text
+        )
+        # Fetch new messages for real-time updates (long polling)
+        new_messages = Message.objects.filter(community=community, timestamp__gt=message.timestamp)
+        return JsonResponse({'messages': list(new_messages.values())})  # Return new messages
+    else:
+        return JsonResponse({'error': 'Empty message'})
 
 
 
