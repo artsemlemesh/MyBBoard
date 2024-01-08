@@ -139,25 +139,25 @@ def add_user_to_group(request, group_id):
 
 
 
-# def community_chat_room(request, community_id):
-#     community = get_object_or_404(Communities, pk=community_id)
-#     if request.user not in community.members.all():
-#         return HttpResponseForbidden('You are not a member')
-#
-#     if request.method == 'POST':
-#         message_text = request.POST.get('message')
-#         if message_text:
-#             message = Message.objects.create(user=request.user, community=community, content=message_text)
-#             return redirect('board:chat_room', community_id=community_id)  # Redirect after POST
-#         else:
-#             return JsonResponse({'error': 'Empty message'})
-#
-#     # GET request or empty message: fetch and display messages
-#     messages = Message.objects.filter(community=community).order_by('-timestamp')
-#     paginator = Paginator(messages, 5)  # 10 messages per page
-#     page_number = request.GET.get('page')# PAGINATION DOESNT WORK PROPERLY
-#     page_obj = paginator.get_page(page_number)
-#     return render(request, 'messages/chat_room.html', {'community': community, 'messages': messages, 'page_obj': page_obj})
+def community_chat_room(request, community_id):
+    community = get_object_or_404(Communities, pk=community_id)
+    if request.user not in community.members.all():
+        return HttpResponseForbidden('You are not a member')
+
+    if request.method == 'POST':
+        message_text = request.POST.get('message')
+        if message_text:
+            message = Message.objects.create(user=request.user, community=community, content=message_text)
+            return redirect('board:chat_room', community_id=community_id)  # Redirect after POST
+        else:
+            return JsonResponse({'error': 'Empty message'})
+
+    # GET request or empty message: fetch and display messages
+    messages = Message.objects.filter(community=community).order_by('-timestamp')
+    paginator = Paginator(messages, 5)  # 10 messages per page
+    page_number = request.GET.get('page')# PAGINATION DOESNT WORK PROPERLY
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'messages/chat_room.html', {'community': community, 'messages': messages, 'page_obj': page_obj})
 
 
 
