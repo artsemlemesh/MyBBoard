@@ -1,0 +1,43 @@
+{% extends 'flatpages/default.html' %}  {% load custom-filters %}
+
+{% block content %}
+<div class="individual-comment-container">
+    <h2>Message</h2>
+    <div class="message">
+        <p><span class="username">{{ message_comment.user.username }}</span>: {{ message_comment.content }}</p>
+        <span class="timestamp" title="{{ message_comment.timestamp }}">{{ message_comment.timestamp|my_timestamp_format }}</span>
+
+        {% if message_comment.image %}
+            <img src="{{ message_comment.image.url }}" alt="Image">
+        {% endif %}
+        {% if message_comment.video %}
+            <video controls>
+                <source src="{{ message_comment.video.url }}" type="video/mp4">
+            </video>
+        {% endif %}
+        {% if message_comment.description %}
+            <p class="description"> {{ message_comment.description }} </p>
+        {% endif %}
+    </div>
+
+    <h2>Comments</h2>
+
+
+    <h3>number: {% if message_comment %}
+                    {{ message_comment.community }}
+                {% endif %}
+    </h3>
+
+
+    <div class="comments">
+        {% for comment in message_comment.comment_set.all %}  <div class="comment">
+                <span class="comment-username">{{ comment.user.username }}</span>: {{ comment.content }}
+                <span class="timestamp" title="{{ comment.timestamp }}">{{ comment.timestamp|my_timestamp_format }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+</div>
+{% endblock content %}

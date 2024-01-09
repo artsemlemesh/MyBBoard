@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostList, PostCreate, PostDetail, CommentCreate, CommentDetail, PostUpdate, CategoryListView, confirmation, register, subscribe, group_list, add_user_to_group, GroupCreate, community_chat_room
+from .views import PostList, PostCreate, PostDetail, CommentCreate, CommentDetail, PostUpdate, CategoryListView, confirmation, register, subscribe, group_list, add_user_to_group, GroupCreate, community_chat_room, add_comment
 from django.contrib.auth.views import LoginView, LogoutView
 
 app_name = 'board'
@@ -21,6 +21,9 @@ urlpatterns = [
     path('group_list/', group_list, name='group_list'),
     path('add_user_to_group/<int:group_id>', add_user_to_group, name='add_user_to_group'),
 
-    path('chat_room/<int:community_id>', community_chat_room, name = 'chat_room')
+    path('chat_room/<int:community_id>', community_chat_room, name = 'chat_room'),
+
+    path('chat_roommm/<int:community_id>/messages/<int:message_id>/', add_comment, name='add_comment')
+    # path('add_comment<int:message_id>', add_comment, name='add_comment')
 
 ]

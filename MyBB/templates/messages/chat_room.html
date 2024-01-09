@@ -7,8 +7,16 @@
 
 <div class="chat-container">  <h1>{{ community.name }}</h1>
 
-    <form id="chat-form" method="post" class="chat-form">  {% csrf_token %}
+    <form id="chat-form" method="post" class="chat-form">
+        {% csrf_token %}
         <input type="text" name="message" placeholder="Type your message" class="chat-input">
+        <textarea name="description" placeholder="add a description"></textarea>
+
+        <div class="upload-options">
+            <input type="file" name="image" accept="image/*">
+            <input type="file" name="video" accept="video/*">
+        </div>
+
         <button type="submit" class="chat-send-button">Send</button>
     </form>
 
@@ -17,6 +25,31 @@
         <div class="message">
             <p><span class="username">{{ message.user.username }}</span>: {{ message.content }}
             <span class="timestamp" title="{{ message.timestamp }}">{{ message.timestamp|my_timestamp_format }}</span></p>
+            {% if message.image %}
+                <img src="{{ message.image.url }}" alt="Image">
+            {% endif %}
+            {% if message.video %}
+                <video controls>
+                    <source src="{{ message.video.url }}" type="video/mp4">
+                </video>
+            {% endif %}
+            {% if message.description %}
+                <p class="description"> {{ message.description }} </p>
+            {% endif %}
+            <div class="comments">
+                {% for comment in message.comment_set.all %}
+                <div class="comment">
+                    <span class="comment-username">{{ comment.user.username }}</span>: {{ comment.content }}
+                </div>
+                {% endfor %}
+                <form action="{% url 'board:add_comment' community_id=community.id  message_id=message.id %}" method="post">
+                    {% csrf_token %}
+                    <textarea name="content"></textarea>
+                    <button type="submit">Comment</button>
+
+                </form>
+
+            </div>
         </div>
         {% endfor %}
     </div>

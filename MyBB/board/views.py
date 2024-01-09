@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
-from .models import Post, Comment, DisposableCode, Category, Communities, Message
+from .models import Post, Comment, DisposableCode, Category, Communities, Message, PostComment
 from .forms import PostForm, CommentForm, MyUserCreationForm, GroupForm
 import secrets
 from django.core.mail import send_mail
@@ -146,8 +146,17 @@ def community_chat_room(request, community_id):
 
     if request.method == 'POST':
         message_text = request.POST.get('message')
-        if message_text:
-            message = Message.objects.create(user=request.user, community=community, content=message_text)
+        description = request.POST.get('description')
+        image = request.FILES.get('image')#what is FILES??????
+        video = request.FILES.get('video')
+        if message_text or image or video:
+            message = Message.objects.create(user=request.user,
+                                             community=community,
+                                             content=message_text,
+                                             description=description,
+                                             image=image,
+                                             video=video
+                                             )
             return redirect('board:chat_room', community_id=community_id)  # Redirect after POST
         else:
             return JsonResponse({'error': 'Empty message'})
@@ -160,6 +169,23 @@ def community_chat_room(request, community_id):
     return render(request, 'messages/chat_room.html', {'community': community, 'messages': messages, 'page_obj': page_obj})
 
 
+def add_comment(request,community_id, message_id):
+    community = get_object_or_404(Communities, pk=community_id)
+    message_comment = Message.objects.get(id=message_id)
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content:
+            postcomment = PostComment.objects.create(user=request.user,
+                                                     message=message_comment,
+                                                     content=content
+                                                     )
+            return redirect('board:add_comment', community_id=community_id, message_id=message_id)
+        else:
+            return JsonResponse({'error': 'Empty message'})
+    messages = Message.objects.filter(community=community).order_by('-timestamp')
+
+    return render(request, 'messages/individual_comment.html', {'message_comment':message_comment, 'messages': messages}) #if GET request
 
 # def send_message(request, community_id):#only sends json response for real-time updates( overlaps with community_chat_room)
 #     community = get_object_or_404(Communities, pk=community_id)
