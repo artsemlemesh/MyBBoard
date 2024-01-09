@@ -154,27 +154,27 @@ def community_chat_room(request, community_id):
 
     # GET request or empty message: fetch and display messages
     messages = Message.objects.filter(community=community).order_by('-timestamp')
-    paginator = Paginator(messages, 5)  # 10 messages per page
-    page_number = request.GET.get('page')# PAGINATION DOESNT WORK PROPERLY
+    paginator = Paginator(messages, 10)  # 10 messages per page
+    page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'messages/chat_room.html', {'community': community, 'messages': messages, 'page_obj': page_obj})
 
 
 
-def send_message(request, community_id):#THIS VIEW ISNT CONNECTED TO URLS AND I NEED TO FIGURE OUT WHAT IT IS FOR
-    community = get_object_or_404(Communities, pk=community_id)
-    if request.user not in community.members.all():
-        return JsonResponse({'error': 'Not a member'})
-    message_text = request.POST.get('message')
-    if message_text:
-        message = Message.objects.create(
-            user=request.user, community=community, content=message_text
-        )
-        # Fetch new messages for real-time updates (long polling)
-        new_messages = Message.objects.filter(community=community, timestamp__gt=message.timestamp)
-        return JsonResponse({'messages': list(new_messages.values())})  # Return new messages
-    else:
-        return JsonResponse({'error': 'Empty message'})
+# def send_message(request, community_id):#only sends json response for real-time updates( overlaps with community_chat_room)
+#     community = get_object_or_404(Communities, pk=community_id)
+#     if request.user not in community.members.all():
+#         return JsonResponse({'error': 'Not a member'})
+#     message_text = request.POST.get('message')
+#     if message_text:
+#         message = Message.objects.create(
+#             user=request.user, community=community, content=message_text
+#         )
+#         # Fetch new messages for real-time updates (long polling)
+#         new_messages = Message.objects.filter(community=community, timestamp__gt=message.timestamp)
+#         return JsonResponse({'messages': list(new_messages.values())})  # Return new messages
+#     else:
+#         return JsonResponse({'error': 'Empty message'})
 
 
 
